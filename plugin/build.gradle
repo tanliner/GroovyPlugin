@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    implementation gradleApi() // gradle sdk
+    implementation localGroovy() // groovy sdk
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.tools.build:gradle:3.5.0'
+    // open source, for class file modify
+    implementation 'javassist:javassist:3.12.1.GA'
+    // open source, handle IO
+    implementation 'commons-io:commons-io:2.6'
+}
+
+// publish to local Maven
+repositories {
+    mavenCentral()
+}
+
+// must be same as the file `properties` under the directory
+// resources/META-INF/gradle-plugins/com.ltan.plugin.properties
+group = 'com.ltan.plugin'
+// optional, default is library name
+// archivesBaseName = 'plugin'
+version = '1.0.0'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // upload to ../repo, local maven
+            repository(url: uri('../repo'))
+        }
+    }
+}
